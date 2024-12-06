@@ -4,14 +4,14 @@
 #include "pin_config.h"
 #include "wifi.h"
 
-// Variable global para el contador de autos
+// Global variable
 int vehicle_count = 0;
 bool relay_active = false;
 unsigned long relay_timer_start = 0;
 const long interval = 500;        // Time between sensor readings (in ms)
 
-//Definimos el tiempo de activacion del relé
-#define RELAY_DURATION 120000 // 2 minutos en milisegundos
+// Define the relay activation time
+#define RELAY_DURATION 120000 // 2 minutes en miliseconds
 
 // WiFi connection function
 void connectToWiFi() {
@@ -30,18 +30,18 @@ void connectToWiFi() {
 void setup() {
     Serial.begin(115200);
 
-    // Inicializa conexion Wifi
+    // Initialize Wifi connection
     connectToWiFi();
 
-    // Inicializa los sensores ultrasónicos
+    // Initialize ultrasonic sensors
     initSensors();
 
-    // Inicializa el display OLED
+    // Initialize OLED Display
     initDisplay();
 
-    // Configurar el pin del relé como salida y apagarlo al inicio
+    // Set the relay pin as an output and turn it off at startup
     pinMode(RELAY_PIN, OUTPUT);
-    digitalWrite(RELAY_PIN, LOW); // Relé apagado inicialmente
+    digitalWrite(RELAY_PIN, LOW); // Relay initially off
 }
 
 enum WiFiState { CONNECTING, CONNECTED, DISCONNECTED };
@@ -62,7 +62,7 @@ void loop() {
             }
             break;
         case CONNECTED:
-            // Realiza acciones relacionadas con el contador
+            // Perform actions related to the counter
             break;
         case DISCONNECTED:
             connectToWiFi();

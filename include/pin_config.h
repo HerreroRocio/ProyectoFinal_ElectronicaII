@@ -1,16 +1,16 @@
 #ifndef PIN_CONFIG_H
 #define PIN_CONFIG_H
 
-// Sensores ultrasónicos
-#define TRIG_PIN2 26  // Sensor de egreso (TRIG)
-#define ECHO_PIN2 25 // Sensor de egreso (ECHO)
-#define TRIG_PIN1 19 // Sensor de ingreso (TRIG)
-#define ECHO_PIN1 18 // Sensor de ingreso (ECHO)
+// Ultrasonic sensors
+#define TRIG_PIN2 26  // Exit sensor (TRIG)
+#define ECHO_PIN2 25 // Exit sensor (ECHO)
+#define TRIG_PIN1 19 // Entry sensor (TRIG)
+#define ECHO_PIN1 18 // Entry sensor (ECHO)
 
-// Relé (control de la luz)
+// Relay (light control)
 #define RELAY_PIN 17
 
-// Display OLED (I2C)
+// OLED Display (I2C)
 #define SDA_PIN 21 // Pin SDA
 #define SCL_PIN 22 // Pin SCL
 
