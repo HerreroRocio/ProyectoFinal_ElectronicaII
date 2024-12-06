@@ -1,17 +1,16 @@
 #include "sensor_handler.h"
 #include <Arduino.h>
-#include <pin_config.h>
+#include "pin_config.h"
 
-// Definimos los tiempos de umbral para detectar vehículos
-#define DETECTION_THRESHOLD 10 // Umbral en cm para considerar un objeto
-#define MAX_DISTANCE 400       // Distancia máxima que el sensor puede detectar
-#define NO_OBJECT -1           // Valor cuando no hay objeto
+// Define thresholds and constants
+#define DETECTION_THRESHOLD 10 // Threshold in cm to detect an object
+#define MAX_DISTANCE 400       // Maximum distance the sensor can detect
+#define NO_OBJECT -1           // Value when no object is detected
 
-// Variables para almacenar el estado actual y anterior de los sensores
-bool sensor1Active = false; // Estado del sensor de ingreso
-bool sensor2Active = false; // Estado del sensor de egreso
+// Variables to store the current and previous state of sensors
+bool sensorActive[] = {false, false}; // States for both sensors
 
-// Inicialización de los pines de los sensores ultrasónicos
+// Initialize the pins for the ultrasonic sensors
 void initSensors() {
     pinMode(TRIG_PIN1, OUTPUT);
     pinMode(ECHO_PIN1, INPUT);
@@ -19,7 +18,7 @@ void initSensors() {
     pinMode(ECHO_PIN2, INPUT);
 }
 
-// Medir la distancia con los sensores ultrasónicos
+// Measure the distance using ultrasonic sensors
 long measureDistance(int trigPin, int echoPin) {
     digitalWrite(trigPin, LOW);
     delayMicroseconds(2);
@@ -27,48 +26,32 @@ long measureDistance(int trigPin, int echoPin) {
     delayMicroseconds(10);
     digitalWrite(trigPin, LOW);
 
-    long duration = pulseIn(echoPin, HIGH, 30000); // Timeout de 30 ms
+    long duration = pulseIn(echoPin, HIGH, 30000); // Timeout of 30 ms
     if (duration == 0) {
-        return NO_OBJECT; // Sin respuesta del sensor
+        return NO_OBJECT; // No response from sensor
     }
 
-    long distance = (duration / 2) * 0.0343; // Calcula distancia en cm
+    long distance = (duration / 2) * 0.0343; // Calculate distance in cm
     if (distance > MAX_DISTANCE) {
-        return NO_OBJECT; // Distancia fuera del rango del sensor
+        return NO_OBJECT; // Distance out of range
     }
 
     return distance;
 }
 
-
-// Verificar si un vehículo ingresó (sensor 1)
-bool checkVehicleEntry() {
-    long distance = measureDistance(TRIG_PIN1, ECHO_PIN1);
+// Generalized function to check vehicle entry or exit
+bool checkVehicle(int trigPin, int echoPin, int sensorIndex) {
+    long distance = measureDistance(trigPin, echoPin);
 
     if (distance < DETECTION_THRESHOLD && distance != NO_OBJECT) {
-        if (!sensor1Active) { // Detecta sólo si antes no estaba activo
-            sensor1Active = true; // Marca el sensor como activo
-            return true;          // Vehículo ingresó
+        if (!sensorActive[sensorIndex]) { // Detect only if previously inactive
+            sensorActive[sensorIndex] = true; // Mark sensor as active
+            return true;                      // Vehicle detected
         }
     } else {
-        sensor1Active = false; // Resetea cuando el objeto se aleja
+        sensorActive[sensorIndex] = false; // Reset when object moves away
     }
 
     return false;
 }
 
-// Verificar si un vehículo salió (sensor 2)
-bool checkVehicleExit() {
-    long distance = measureDistance(TRIG_PIN2, ECHO_PIN2);
-
-    if (distance < DETECTION_THRESHOLD && distance != NO_OBJECT) {
-        if (!sensor2Active) { // Detecta sólo si antes no estaba activo
-            sensor2Active = true; // Marca el sensor como activo
-            return true;          // Vehículo salió
-        }
-    } else {
-        sensor2Active = false; // Resetea cuando el objeto se aleja
-    }
-
-    return false;
-}
