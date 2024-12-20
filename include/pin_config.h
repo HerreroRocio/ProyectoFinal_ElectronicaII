@@ -20,8 +20,8 @@
 //--Software constants
 #define SERIAL_BAUDRATE             19200
 
-#define WIFI_SSID "Fibertel598 2.4GHz"
-#define WIFI_PASSWORD "00421413349"
+#define WIFI_SSID "Wi-Fi 8 A"
+#define WIFI_PASSWORD "ramiguille2024"
 
 //--Structures
 struct Config {

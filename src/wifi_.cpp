@@ -137,7 +137,6 @@ bool wifi_loop(void){
 //--Connect to wifi network. Return state of connection (T/F)
 bool _connect(void){
   Serial.printf("Connecting to %s with %s password", config.ssid, config.ssid_pass);
-  //WiFi.begin("MAC_E","wpaadministrator08");
   WiFi.begin(config.ssid, config.ssid_pass);
   _wifi_crono = millis();
   while (WiFi.status()!=WL_CONNECTED){

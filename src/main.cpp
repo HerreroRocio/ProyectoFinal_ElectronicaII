@@ -30,9 +30,6 @@ void connectToWiFi() {
 void setup() {
     Serial.begin(115200);
 
-    // Initialize Wifi connection
-    connectToWiFi();
-
     // Initialize ultrasonic sensors
     initSensors();
 
@@ -42,6 +39,9 @@ void setup() {
     // Set the relay pin as an output and turn it off at startup
     pinMode(RELAY_PIN, OUTPUT);
     digitalWrite(RELAY_PIN, LOW); // Relay initially off
+
+     // Initialize Wifi connection
+    connectToWiFi();
 }
 
 enum WiFiState { CONNECTING, CONNECTED, DISCONNECTED };
