@@ -1,11 +1,15 @@
 #include "sensor_handler.h"
 #include <Arduino.h>
 #include "pin_config.h"
+#include "display_manager.h"
 
 // Define thresholds and constants
 #define DETECTION_THRESHOLD 10 // Threshold in cm to detect an object
 #define MAX_DISTANCE 400       // Maximum distance the sensor can detect
 #define NO_OBJECT -1           // Value when no object is detected
+
+// Define the relay activation time
+#define RELAY_DURATION 120000 // 2 minutes en miliseconds
 
 // Variables to store the current and previous state of sensors
 bool sensorActive[] = {false, false}; // States for both sensors
@@ -44,12 +48,12 @@ bool checkVehicle(int trigPin, int echoPin, int sensorIndex) {
     long distance = measureDistance(trigPin, echoPin);
 
     if (distance < DETECTION_THRESHOLD && distance != NO_OBJECT) {
-        if (!sensorActive[sensorIndex]) { // Detect only if previously inactive
-            sensorActive[sensorIndex] = true; // Mark sensor as active
-            return true;                      // Vehicle detected
+        if (!sensorActive[sensorIndex]) {
+            sensorActive[sensorIndex] = true;
+            return true;
         }
     } else {
-        sensorActive[sensorIndex] = false; // Reset when object moves away
+        sensorActive[sensorIndex] = false;
     }
 
     return false;

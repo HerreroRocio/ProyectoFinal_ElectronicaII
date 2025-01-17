@@ -20,16 +20,4 @@
 //--Software constants
 #define SERIAL_BAUDRATE             19200
 
-#define WIFI_SSID "Wi-Fi 8 A"
-#define WIFI_PASSWORD "ramiguille2024"
-
-//--Structures
-struct Config {
-  const char* device;
-  const char* ssid;
-  const char* ssid_pass;
-  const char* ap_ssid;
-  const char* ap_pass;
-};
-
 #endif // PIN_CONFIG_H
